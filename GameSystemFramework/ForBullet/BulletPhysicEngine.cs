@@ -7,7 +7,7 @@ using System.Text;
 
 namespace GameSystem.ForBullet
 {
-    class BulletPhysicEngine : PhysicEngineProxy
+    public class BulletPhysicEngine : PhysicEngineProxy
     {
         private CollisionConfiguration configuration;
         private Dispatcher dispatcher;
@@ -71,6 +71,8 @@ namespace GameSystem.ForBullet
             world.RemoveCollisionObject((CollisionObject)colProxy.CollisionData);
         }
 
+        public override void Initialize() { }
+
         public override void Update(TimeSpan deltaTime)
         {
             float second = (float)deltaTime.TotalSeconds;
@@ -88,5 +90,9 @@ namespace GameSystem.ForBullet
                 colB.OnCollision(colB, colA);
             }
         }
+
+        #region Setting methods
+        // To do setting methods (Example : gravity, fixedtime ... etc.)
+        #endregion
     }
 }

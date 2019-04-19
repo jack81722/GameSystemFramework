@@ -16,7 +16,8 @@ namespace GameSystem.GameCore
             collisions = new List<CollisionProxy>();
         }
 
-        public abstract void Update(TimeSpan tick);
+        public virtual void Initialize() { }
+        public virtual void Update(TimeSpan tick) { }
 
         public abstract void AddCollision(CollisionProxy colProxy);
 
@@ -53,10 +54,7 @@ namespace GameSystem.GameCore
         /// <param name="shapeArgs">other shape argument</param>
         public abstract CollisionProxy CreateOtherCollision(int shapeType, params object[] shapeArgs);
 
-        public void Initialize()
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameSystem.GameCore
 {
-    public abstract class Game
+    public class Game
     {
         /// <summary>
         /// Defined game module list
@@ -20,6 +20,14 @@ namespace GameSystem.GameCore
         {
             GMList = new List<IGameModule>(gameModules);
             GMList.RemoveAll(gm => gm == null);
+        }
+
+        public void Initialize()
+        {
+            for(int i = 0; i < GMList.Count; i++)
+            {
+                GMList[i].Initialize();
+            }
         }
 
         public void Start()

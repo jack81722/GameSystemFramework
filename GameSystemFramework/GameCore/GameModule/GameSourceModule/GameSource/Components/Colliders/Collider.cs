@@ -14,6 +14,7 @@ namespace GameSystem.GameCore.Components
 
         public override void Start()
         {
+            colProxy.collider = this;
             colProxy.CollisionEvent += ColProxy_CollisionEvent;
         }
 

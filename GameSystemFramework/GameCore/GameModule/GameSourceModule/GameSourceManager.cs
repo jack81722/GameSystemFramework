@@ -154,8 +154,6 @@ namespace GameSystem.GameCore
         }
         #endregion
 
-        
-
         #region Instantiate methods
         public T Create<T>() where T : GameSource, new()
         {
