@@ -10,15 +10,22 @@ namespace GameSystem.GameCore
 
         public void Build(GameSourceManager gsMgr)
         {
-            this.gsMgr = gsMgr;   
+            this.gsMgr = gsMgr;
+            Building();
         }
 
         protected abstract void Building();
 
-        public GameObject CreateGameObject()
+        protected GameObject CreateGameObject(string name = "GameObject")
         {
             var go = gsMgr.Create<GameObject>();
+            go.Name = name;
             return go;
+        }
+
+        protected GameObject Instantiate(GameObject prefab)
+        {
+            return GameObject.Instantiate(prefab);
         }
     }
 }

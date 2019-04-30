@@ -86,8 +86,11 @@ namespace GameSystem.ForBullet
                 CollisionProxy colA = (CollisionProxy)manifold.Body0.UserObject;
                 CollisionProxy colB = (CollisionProxy)manifold.Body1.UserObject;
 
-                colA.OnCollision(colA, colB);
-                colB.OnCollision(colB, colA);
+                //if (colA != null && colB != null)
+                {
+                    colA.OnCollision(colA, colB);
+                    colB.OnCollision(colB, colA);
+                }
             }
         }
 

@@ -11,10 +11,12 @@ namespace GameSystem.GameCore.Components
     public abstract class Collider : Component
     {
         protected CollisionProxy colProxy;
+        public event OnCollisionHandler OnCollisionEvent;
 
         public override void Start()
         {
             colProxy.collider = this;
+            colProxy.SetTransform(transform.matrix);
             colProxy.CollisionEvent += ColProxy_CollisionEvent;
         }
 
@@ -24,11 +26,17 @@ namespace GameSystem.GameCore.Components
             Manager.PhysicEngine.RemoveCollision(colProxy);
         }
 
-        private void ColProxy_CollisionEvent(CollisionProxy colA, CollisionProxy colB)
+        public override void LateUpdate()
         {
-            OnCollision(colA.collider, colB.collider);
+            colProxy.SetTransform(transform.matrix);
         }
 
-        public virtual void OnCollision(Collider self, Collider other) { }
+        private void ColProxy_CollisionEvent(CollisionProxy colA, CollisionProxy colB)
+        {
+            OnCollisionEvent.Invoke(colA.collider, colB.collider);
+        }
     }
+
+    public delegate void OnCollisionHandler(Collider self, Collider other);
+
 }

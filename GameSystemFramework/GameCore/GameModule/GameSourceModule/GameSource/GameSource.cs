@@ -28,6 +28,8 @@ namespace GameSystem.GameCore
         public virtual bool executing { get; }
         public Transform transform;
 
+        public TimeSpan DeltaTime { get { return Manager.DeltaTime; } }
+
         public GameSource()
         {
             transform = new Transform();
@@ -38,6 +40,8 @@ namespace GameSystem.GameCore
 
         public virtual void Update() { }
 
+        public virtual void LateUpdate() { }
+
         public virtual void OnDestroy() { }
         #endregion
 
@@ -45,51 +49,26 @@ namespace GameSystem.GameCore
         public virtual void OnEndOfFrame() { }
         #endregion
 
-        #region Instantiate methods
-        protected GameSource Instantiate(GameSource prefab)
-        {   
-            return Manager.Instantiate(prefab);
-        }
-
-        protected GameSource Instantiate(GameSource prefab, Vector3 position)
-        {
-            return Manager.Instantiate(prefab, position);
-        }
-
-        protected GameSource Instantiate(GameSource prefab, Vector3 position, Quaternion rotation)
-        {
-            return Manager.Instantiate(prefab, position, rotation);
-        }
-
-        protected GameSource Instantiate(GameSource prefab, Vector3 position, Quaternion rotation, Vector3 scale)
-        {
-            return Manager.Instantiate(prefab, position, rotation, scale);
-        }
-
-        protected T Instantiate<T>(T prefab) where T : GameSource, new()
-        {
-            return Manager.Instantiate(prefab);
-        }
-
-        protected T Instantiate<T>(T prefab, Vector3 position) where T : GameSource, new()
-        {
-            return Manager.Instantiate(prefab, position);
-        }
-
-        protected T Instantiate<T>(T prefab, Vector3 position, Quaternion rotation) where T : GameSource, new()
-        {
-            return Manager.Instantiate(prefab, position, rotation);
-        }
-
-        protected T Instantiate<T>(T prefab, Vector3 position, Quaternion rotation, Vector3 scale) where T : GameSource, new()
-        {
-            return Manager.Instantiate(prefab, position, rotation, scale);
-        }
-        #endregion
-
         public void Destroy(GameSource gs)
         {
             Manager.RemoveGameSource(gs);
         }
+
+        #region Log methods
+        public void Log(object obj)
+        {
+            Manager.Log(obj);
+        }
+
+        public void LogError(object obj)
+        {
+            Manager.LogError(obj);
+        }
+
+        public void LogWarning(object obj)
+        {
+            Manager.LogWarning(obj);
+        }
+        #endregion
     }
 }

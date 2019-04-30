@@ -11,27 +11,32 @@ namespace Demo.SimpleGame
     {
         Task gameTask;
         Game game;
+        GameSourceManager gsManager;
+        SimpleGameBuilder builder;
 
         public SimpleGame()
         {
             BulletPhysicEngine physicEngine = new BulletPhysicEngine();
-            GameSourceManager gsManager = new GameSourceManager(physicEngine);
+            gsManager = new GameSourceManager(physicEngine);
+            builder = new SimpleGameBuilder();
             game = new Game(physicEngine, gsManager);
         }
 
         public void Init()
         {
             game.Initialize();
+            builder.Build(gsManager);
         }
 
         public void StartGame()
         {
-            gameTask = Task.Factory.StartNew(() => game.Start());
+            //gameTask = Task.Factory.StartNew(() => game.Start());
+            game.Start();
         }
 
         public void StopGame()
-        {
-
+        {   
+            game.Stop();
         }
     }
 }

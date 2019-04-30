@@ -5,9 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="BulletSharp">
-      <HintPath>..\Lib-Bullet\BulletSharp.dll</HintPath>
-    </Reference>
+    <PackageReference Include="BulletSharp" Version="0.11.1" />
   </ItemGroup>
 
 </Project>

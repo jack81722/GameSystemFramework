@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using ExCollection;
+using System.Reflection;
+using GameSystem.GameCore.Debugger;
 
 namespace GameSystem.GameCore
 {
@@ -26,6 +28,8 @@ namespace GameSystem.GameCore
         private List<GameSource> temp_stateRefresh;
 
         public PhysicEngineProxy PhysicEngine { get; private set; }
+
+        private IDebugger Debugger = new ConsoleDebugger();
 
         public GameSourceManager(PhysicEngineProxy physicEngine)
         {
@@ -80,10 +84,17 @@ namespace GameSystem.GameCore
                 if(GSList[i].executing)
                     GSList[i].Update();
             }
-            for (int i = 0; i < GSList.Count; i++)
+
+            for(int i = 0; i < GSList.Count; i++)
+            {
+                if (GSList[i].executing)
+                    GSList[i].LateUpdate();
+            }
+
+            for (int i = 0; i < removed.Count; i++)
             {
                 // need try/catch ...
-                GSList[i].OnDestroy();
+                removed[i].OnDestroy();
             }
             updating = false;
 
@@ -96,7 +107,7 @@ namespace GameSystem.GameCore
         /// Execute while end of frame
         /// </summary>
         private void RefreshGS()
-        {
+        {   
             for (int i = 0; i < temp_adding.Count; i++)
                 _addGS(temp_adding[i]);
             for (int i = 0; i < temp_stateRefresh.Count; i++)
@@ -129,7 +140,10 @@ namespace GameSystem.GameCore
         private void _addGS(GameSource source)
         {
             lock (GSList)
-                if (!GSList.TryAdd(source)) Console.WriteLine("add same key gs.");
+            {
+                if (!GSList.TryAdd(source)) return;
+                added.Add(source);
+            }
         }
 
         /// <summary>
@@ -148,76 +162,21 @@ namespace GameSystem.GameCore
         }
 
         private void _removeGS(GameSource source)
-        {   
+        {
             lock (GSList)
+            {
                 GSList.Remove(source);
+                removed.Add(source);
+            }
         }
         #endregion
 
-        #region Instantiate methods
         public T Create<T>() where T : GameSource, new()
         {
             T source = new T() { Manager = this, SID = NewSID() };
             AddGameSource(source);
             return source;
         }
-
-        public GameSource Instantiate(GameSource prefab)
-        {
-            GameSource gs = new GameSource() { Manager = this, SID = NewSID(), transform = new Transform() };
-            AddGameSource(gs);
-            return gs;
-        }
-
-        public GameSource Instantiate(GameSource prefab, Vector3 position)
-        {
-            GameSource gs = new GameSource() { Manager = this, SID = NewSID(), transform = new Transform(position) };
-            AddGameSource(gs);
-            return gs;
-        }
-
-        public GameSource Instantiate(GameSource prefab, Vector3 position, Quaternion rotation)
-        {
-            GameSource gs = new GameSource() { Manager = this, SID = NewSID(), transform = new Transform(position, rotation) };
-            AddGameSource(gs);
-            return gs;
-        }
-
-        public GameSource Instantiate(GameSource prefab, Vector3 position, Quaternion rotation, Vector3 scale)
-        {
-            GameSource gs = new GameSource() { Manager = this, SID = NewSID(), transform = new Transform(position, rotation, scale) };
-            AddGameSource(gs);
-            return gs;
-        }
-
-        public T Instantiate<T>(T source) where T : GameSource, new()
-        {
-            T newSource = new T() { Manager = this, SID = NewSID() };
-            AddGameSource(source);
-            return newSource;
-        }
-
-        public T Instantiate<T>(T source, Vector3 position) where T : GameSource, new()
-        {
-            T newSource = new T() { Manager = this, SID = NewSID(), transform = new Transform(position) };
-            AddGameSource(source);
-            return newSource;
-        }
-
-        public T Instantiate<T>(T source, Vector3 position, Quaternion rotation) where T : GameSource, new()
-        {
-            T newSource = new T() { Manager = this, SID = NewSID(), transform = new Transform(position, rotation) };
-            AddGameSource(source);
-            return newSource;
-        }
-
-        public T Instantiate<T>(T source, Vector3 position, Quaternion rotation, Vector3 scale) where T : GameSource, new()
-        {
-            T newSource = new T() { Manager = this, SID = NewSID(), transform = new Transform(position, rotation, scale) };
-            AddGameSource(source);
-            return newSource;
-        }
-        #endregion
 
         #region Find object methods
         public T FindObjectOfType<T>() where T : GameSource
@@ -229,8 +188,23 @@ namespace GameSystem.GameCore
         {
             return GSList.FindAll(gs => gs.GetType() == typeof(T)).Select(gs => (T)gs);
         }
+        #endregion
 
-        
+        #region Log methods
+        public void Log(object obj)
+        {
+            Debugger.Log(obj);
+        }
+
+        public void LogError(object obj)
+        {
+            Debugger.LogError(obj);
+        }
+
+        public void LogWarning(object obj)
+        {
+            Debugger.LogWarning(obj);
+        }
         #endregion
     }
 }

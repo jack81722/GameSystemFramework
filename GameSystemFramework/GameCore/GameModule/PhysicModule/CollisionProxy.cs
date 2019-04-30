@@ -1,4 +1,5 @@
 ﻿using GameSystem.GameCore.Components;
+using GameSystem.GameCore.SerializableMath;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,5 +27,6 @@ namespace GameSystem.GameCore
             CollisionEvent.Invoke(colA, colB);
         }
 
+        public abstract void SetTransform(Matrix4x4 matrix);
     }
 }

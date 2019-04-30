@@ -6,7 +6,11 @@ namespace Demo
     {
         static void Main(string[] args)
         {
-            
+            SimpleGame.SimpleGame game = new SimpleGame.SimpleGame();
+            game.Init();
+            game.StartGame();
+
+            Console.ReadLine();
         }
     }
 }

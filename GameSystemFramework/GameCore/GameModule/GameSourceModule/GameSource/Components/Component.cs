@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using GameSystem.GameCore.SerializableMath;
 
 namespace GameSystem.GameCore
 {
     public class Component : GameSource
     {
         #region Enable field
-        private bool curEnable;
+        private bool curEnable = true;
         private bool newEnable;
         public bool enable
         {
@@ -35,5 +36,32 @@ namespace GameSystem.GameCore
         {
             curEnable = newEnable;
         }
+
+        public T GetComponent<T>() where T : Component
+        {
+            return gameObject.GetComponent<T>();
+        }
+
+        #region Instantiate methods
+        public static GameObject Instantiate(GameObject prefab)
+        {
+            return GameObject.Instantiate(prefab);
+        }
+
+        public static GameObject Instantiate(GameObject prefab, Vector3 position)
+        {
+            return GameObject.Instantiate(prefab, position);
+        }
+
+        public static GameObject Instantiate(GameObject prefab, Vector3 position, Quaternion rotation)
+        {
+            return GameObject.Instantiate(prefab, position, rotation);
+        }
+
+        public static GameObject Instantiate(GameObject prefab, Vector3 position, Quaternion rotation, Vector3 scale)
+        {
+            return GameObject.Instantiate(prefab, position, rotation, scale);
+        }
+        #endregion
     }
 }
