@@ -5,17 +5,31 @@ using System.Text;
 
 namespace GameSystem.GameCore
 {
+    /// <summary>
+    /// Component container that manager all component in game object
+    /// </summary>
     public class ComponentContainer
     {
         private GameObject owner;
         private List<Component> components;
+        private List<Component> temp_remove;
 
+        #region Constructor
         public ComponentContainer(GameObject owner)
         {
             this.owner = owner;
             components = new List<Component>();
+            temp_remove = new List<Component>();
         }
+        #endregion
 
+        #region Add/Remove methods
+        /// <summary>
+        /// Add new component into container and register to gs manager
+        /// </summary>
+        /// <typeparam name="T">component type</typeparam>
+        /// <param name="gsMgr">game source manager</param>
+        /// <returns>added component</returns>
         public T AddComponent<T>(GameSourceManager gsMgr) where T : Component, new()
         {
             lock (components)
@@ -29,6 +43,12 @@ namespace GameSystem.GameCore
             }
         }
 
+        /// <summary>
+        /// Add specific component container
+        /// </summary>
+        /// <typeparam name="T">component type</typeparam>
+        /// <param name="component">adding component</param>
+        /// <returns>added component</returns>
         public T AddComponent<T>(T component) where T : Component
         {
             lock (components)
@@ -41,19 +61,31 @@ namespace GameSystem.GameCore
             }
         }
 
+        /// <summary>
+        /// Remove component
+        /// </summary>
         public void RemoveComponent(Component component)
         {
             lock (components)
             {
-                components.Remove(component);
+                // save component temporarily and then remove on end of frame
+                temp_remove.Add(component);
             }
         }
+        #endregion
 
+        #region Search methods
+        /// <summary>
+        /// Get all components
+        /// </summary>
         public IEnumerable<Component> GetAllComponents()
         {
             return new List<Component>(components);
         }
 
+        /// <summary>
+        /// Get component by specific type
+        /// </summary>
         public T GetComponent<T>() where T : Component
         {
             Component c = components.Find(component => component.GetType() == typeof(T));
@@ -62,6 +94,22 @@ namespace GameSystem.GameCore
             return null;
         }
 
+        /// <summary>
+        /// Get all components which match specific type
+        /// </summary>
+        public IEnumerable<T> GetComponents<T>() where T : Component
+        {
+            List<Component> c = components.FindAll(component => component.GetType() == typeof(T));
+            if (c != null)
+                return (IEnumerable<T>)c;
+            return null;
+        }
+        #endregion
+
+        /// <summary>
+        /// Copy all datas of components to target container
+        /// </summary>
+        /// <param name="container">target container</param>
         public void CopyTo(ref ComponentContainer container)
         {
             Component component;
@@ -97,9 +145,26 @@ namespace GameSystem.GameCore
             }
         }
 
+        /// <summary>
+        /// Refresh add/remove components
+        /// </summary>
+        public void Refresh()
+        {
+            for(int i = 0; i< temp_remove.Count; i++)
+            {
+                components.Remove(temp_remove[i]);
+            }
+            temp_remove.Clear();
+        }
+
+        /// <summary>
+        /// Clear all components
+        /// </summary>
         public void Clear()
         {
-            components.Clear();
+            for (int i = 0; i < components.Count; i++)
+                GameSource.Destroy(components[i]);
+            temp_remove.AddRange(components);
         }
     }
 }

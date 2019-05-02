@@ -9,7 +9,7 @@ namespace GameSystem.GameCore.Components
     public class BoxCollider : Collider, IBoxShape
     {
         private OnceSetValue<Vector3> halfSize = new OnceSetValue<Vector3>(new Vector3(0.5f));
-        public Vector3 HalfSize { get; private set; }
+        public Vector3 HalfSize { get { return halfSize; } }
 
         public override void Start()
         {

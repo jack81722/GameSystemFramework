@@ -1,27 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using BulletSharp;
-using GameSystem.GameCore.Components;
+using GameSystem.GameCore.Debugger;
 using GameSystem.GameCore.GameModule.PhysicModule.ShapeInterface;
 
 namespace GameSystem.GameCore
 {
     public abstract class PhysicEngineProxy : IGameModule
     {
-        public List<CollisionProxy> collisions;
+        protected IDebugger Debugger;
 
-        public PhysicEngineProxy()
+        public PhysicEngineProxy(IDebugger debugger)
         {
-            collisions = new List<CollisionProxy>();
+            Debugger = debugger;
         }
 
         public virtual void Initialize() { }
         public virtual void Update(TimeSpan tick) { }
 
+        #region Add/Remove collision methods
+
         public abstract void AddCollision(CollisionProxy colProxy);
 
         public abstract void RemoveCollision(CollisionProxy colProxy);
+        #endregion
 
         /// <summary>
         /// Create standard box collision
@@ -54,7 +54,22 @@ namespace GameSystem.GameCore
         /// <param name="shapeArgs">other shape argument</param>
         public abstract CollisionProxy CreateOtherCollision(int shapeType, params object[] shapeArgs);
 
-        
+        #region Log methods
+        public void Log(object obj)
+        {
+            Debugger.Log(obj);
+        }
+
+        public void LogError(object obj)
+        {
+            Debugger.LogError(obj);
+        }
+
+        public void LogWarning(object obj)
+        {
+            Debugger.LogWarning(obj);
+        }
+        #endregion
     }
 
 }

@@ -7,7 +7,7 @@ namespace GameSystem.GameCore
 {
     public class Component : GameSource
     {
-        #region Enable field
+        #region Enable properties
         private bool curEnable = true;
         private bool newEnable;
         public bool enable
@@ -19,30 +19,46 @@ namespace GameSystem.GameCore
                 Manager.ChageState(this);
             }
         }
-        #endregion
-
-        public sealed override bool executing { get { return (gameObject != null ? gameObject.isActive : false) && enable; } }
-
-        public GameObject gameObject { get; set; }
-
-        public Component() { }
 
         public void SetEnable(bool isEnable)
         {
             enable = isEnable;
         }
+        #endregion
+
+        public sealed override bool executing { get { return (gameObject != null ? gameObject.isActive : false) && enable; } }
+
+        public GameObject gameObject { get; set; }
+        public sealed override string Name { get { return gameObject.Name; } set { gameObject.Name = value; } }
+        public sealed override string Tag { get { return gameObject.Tag; } set { gameObject.Tag = value; } }
+        public sealed override int Layer { get { return gameObject.Layer; } set { gameObject.Layer = value; } }
+
+        public Component() { }
 
         public sealed override void OnEndOfFrame()
         {
             curEnable = newEnable;
         }
 
+        /// <summary>
+        /// Find component by specific type
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public T GetComponent<T>() where T : Component
         {
             return gameObject.GetComponent<T>();
         }
 
-        #region Instantiate methods
+        #region Create/Instantiate methods
+        /// <summary>
+        /// Create empty game object
+        /// </summary>
+        public GameObject CreateGameObject()
+        {
+            return Manager.Create<GameObject>();
+        }
+
         public static GameObject Instantiate(GameObject prefab)
         {
             return GameObject.Instantiate(prefab);
@@ -61,6 +77,18 @@ namespace GameSystem.GameCore
         public static GameObject Instantiate(GameObject prefab, Vector3 position, Quaternion rotation, Vector3 scale)
         {
             return GameObject.Instantiate(prefab, position, rotation, scale);
+        }
+        #endregion
+
+        #region Destroy methods
+        public static void Destroy(GameObject gameObject)
+        {
+            GameObject.Destroy(gameObject);
+        }
+
+        public static void Destroy(Component component)
+        {
+            GameObject.Destroy(component);
         }
         #endregion
     }

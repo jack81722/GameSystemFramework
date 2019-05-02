@@ -2,16 +2,16 @@
 using GameSystem.GameCore;
 using GameSystem.GameCore.Components;
 using GameSystem.GameCore.SerializableMath;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace GameSystem.ForBullet
+namespace BulletEngine
 {
     public class BulletCollision : CollisionProxy
     {
+        /// <summary>
+        /// Collision object of bullet engine
+        /// </summary>
         public CollisionObject colObj;
-        public override object CollisionData { get { return colObj; } set { colObj = (CollisionObject)value; } }
+        public override object CollisionObject { get { return colObj; } set { colObj = (CollisionObject)value; } }
 
         public BulletCollision (CollisionObject colObj, Collider collider) : base(collider)
         {

@@ -1,5 +1,4 @@
-﻿using GameSystem.ForBullet;
-using GameSystem.GameCore.SerializableMath;
+﻿using GameSystem.GameCore.SerializableMath;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,7 +7,7 @@ namespace GameSystem.GameCore
 {
     public class Transform 
     {
-        public Matrix4x4 matrix { get; private set; }
+        public Matrix4x4 matrix { get { return pos_mat * scale_mat * rot_mat; } }
 
         private Matrix4x4 pos_mat;
         private Matrix4x4 rot_mat;
@@ -21,7 +20,7 @@ namespace GameSystem.GameCore
                 return pos_mat.Origin;
             }
             set
-            {
+            {  
                 pos_mat.Origin = value;
             }
         }
@@ -49,6 +48,7 @@ namespace GameSystem.GameCore
                 scale_mat.m11 = value.x;
                 scale_mat.m22 = value.y;
                 scale_mat.m33 = value.z;
+                scale_mat.m44 = 1;
             }
         }
 

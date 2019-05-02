@@ -24,17 +24,29 @@ namespace Demo.SimpleGame.Scripts
         }
 
         private void Collider_OnCollisionEvent(Collider self, Collider other)
+        {   
+            if (id < other.GetComponent<Character>().id)
+            {
+                Log($"{self.Name} Hit {other.Name}");
+                Destroy(gameObject);
+            }
+        }
+
+        public override void OnDestroy()
         {
-            Log($"{gameObject.Name} {transform.position} hit {other.gameObject.Name} {other.transform.position}");
-            //Destroy(this);
+            Log($"Destroyed {Name}");
         }
 
         public override void Update()
         {
             pos.x += speed * (float)DeltaTime.TotalSeconds;
             //Log($"{gameObject.Name}:");
+
+            //Log($"{Name} at {transform.position}");
+
             //Log($"Pos: {pos}, Speed: {speed}, Time:{DeltaTime.TotalSeconds}");
             transform.position = pos;
+            //Log(transform.matrix);
         }
     }
 }

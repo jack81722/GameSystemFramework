@@ -1,12 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BulletPhysicEngine\BulletPhysicEngine.csproj" />
     <ProjectReference Include="..\GameSystemFramework\GameSystemFramework.csproj" />
   </ItemGroup>
 

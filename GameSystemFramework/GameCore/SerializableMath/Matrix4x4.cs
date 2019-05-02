@@ -11,7 +11,17 @@ namespace GameSystem.GameCore.SerializableMath
                      m21, m22, m23, m24,
                      m31, m32, m33, m34,
                      m41, m42, m43, m44;
-        public Vector3 Origin { get { return new Vector3(m14, m24, m34); } set { m14 = value.x; m24 = value.y; m34 = value.z; } }
+        public Vector3 Origin
+        {
+            get { return new Vector3(m41, m42, m43); }
+            set
+            {
+                m11 = 1; m12 = 0; m13 = 0; m14 = 0;
+                m21 = 0; m22 = 1; m23 = 0; m24 = 0;
+                m31 = 0; m32 = 0; m33 = 1; m34 = 0;
+                m41 = value.x; m42 = value.y; m43 = value.z; m44 = 1;
+            }
+        }
 
         public static readonly Matrix4x4 zero = new Matrix4x4(0);
         public static readonly Matrix4x4 identity = new Matrix4x4()
@@ -166,6 +176,13 @@ namespace GameSystem.GameCore.SerializableMath
         {
             m.Divide(f);
             return m;
+        }
+
+        public override string ToString()
+        {
+            return string.Format(
+                "[{0}, {1}, {2}, {3}][{4}, {5}, {6}, {7}][{8}, {9}, {10}, {11}][{12}, {13}, {14}, {15}]",
+                m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44);
         }
     }
 }

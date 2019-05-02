@@ -7,9 +7,12 @@ namespace GameSystem.GameCore
 {
     public sealed class GameObject : GameSource
     {
-        public string Name;
         private ComponentContainer container;
 
+        #region Active properties
+        /// <summary>
+        /// Set game object state (On/Off)
+        /// </summary>
         public bool isActive
         {
             get { return curActive; }
@@ -21,7 +24,12 @@ namespace GameSystem.GameCore
         }
         private bool curActive = true;
         private bool newActive;
-        
+        public void SetActive(bool active)
+        {
+            isActive = active;
+        }
+        #endregion
+
         public sealed override bool executing { get { return isActive; } }
 
         // Cannot be called straightly ...
@@ -30,30 +38,71 @@ namespace GameSystem.GameCore
             container = new ComponentContainer(this);
         }
 
+        #region Component methods
+        /// <summary>
+        /// Add new component with type T
+        /// </summary>
+        /// <typeparam name="T">component type</typeparam>
         public T AddComponent<T>() where T : Component, new()
         {
             return container.AddComponent<T>(Manager);
         }
 
+        /// <summary>
+        /// Add specific component
+        /// </summary>
+        /// <typeparam name="T">component type</typeparam>
+        /// <param name="component">component for adding</param>
         public T AddComponent<T>(T component) where T : Component
         {
             return container.AddComponent(component);
         }
 
+        /// <summary>
+        /// Find component with specific type
+        /// </summary>
         public T GetComponent<T>() where T : Component
         {
             return container.GetComponent<T>();
         }
 
-        public void SetActive(bool active)
+        /// <summary>
+        /// Find components with specific type
+        /// </summary>
+        public IEnumerable<T> GetComponents<T>() where T : Component
         {
-            isActive = active;
+            return container.GetComponents<T>();
         }
+        #endregion
 
         public sealed override void OnEndOfFrame()
         {
+            // refresh adding/removing components
+            container.Refresh();
+            // change state
             curActive = newActive;
         }
+
+        #region Destroy methods
+        /// <summary>
+        /// Destroy game object
+        /// </summary>
+        public static void Destroy(GameObject gameObject)
+        {
+            gameObject.container.Clear();
+        }
+
+        /// <summary>
+        /// Destroy component
+        /// </summary>
+        public static void Destroy(Component component)
+        {
+            if(component.Manager != null)
+                component.Manager.RemoveGameSource(component);
+            if(component.gameObject != null)
+                component.gameObject.container.RemoveComponent(component);
+        }
+        #endregion
 
         #region Instantiate method
         public static GameObject Instantiate(GameObject prefab)

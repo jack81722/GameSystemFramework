@@ -17,25 +17,26 @@ namespace GameSystem.GameCore
         public bool updating { get; private set; }
         public TimeSpan DeltaTime { get; private set; }
 
-        // temp of added/removed game source for start/destroy phase
+        // temp of added/removed game source which would execute start/destroy phase
         private List<GameSource> added;
         private List<GameSource> removed;
 
-        // temp of adding/removing game source for refresh 
+        // temp of adding/removing game sources for adding/removing 
         private List<GameSource> temp_adding;
         private List<GameSource> temp_remove;
 
+        // temp of state refreshing game sources
         private List<GameSource> temp_stateRefresh;
 
         public PhysicEngineProxy PhysicEngine { get; private set; }
 
-        private IDebugger Debugger = new ConsoleDebugger();
+        private IDebugger Debugger;
 
-        public GameSourceManager(PhysicEngineProxy physicEngine)
+        public GameSourceManager(PhysicEngineProxy physicEngine, IDebugger debugger)
         {
             source_id = 0;
             GSList = new KeyedList<uint, GameSource>();
-           
+            
             added = new List<GameSource>();
             removed = new List<GameSource>();
 
@@ -45,6 +46,7 @@ namespace GameSystem.GameCore
             temp_stateRefresh = new List<GameSource>();
 
             PhysicEngine = physicEngine;
+            Debugger = debugger;
         }
         
         /// <summary>
@@ -70,36 +72,87 @@ namespace GameSystem.GameCore
             DeltaTime = deltaTime;
             updating = true;
             // start phase (only process non-started game source)
-            for (int i = 0; i < added.Count; i++)
-            {
-                // need try/catch ...
-                added[i].Start();
-            }
-            added.Clear();
+            _startPhase();
 
             // update phase
-            for (int i = 0; i < GSList.Count; i++)
-            {
-                // need try/catch ...
-                if(GSList[i].executing)
-                    GSList[i].Update();
-            }
+            _updatePhase();
 
-            for(int i = 0; i < GSList.Count; i++)
-            {
-                if (GSList[i].executing)
-                    GSList[i].LateUpdate();
-            }
-
-            for (int i = 0; i < removed.Count; i++)
-            {
-                // need try/catch ...
-                removed[i].OnDestroy();
-            }
+            // late update phase
+            _lateupdatePhase();
             updating = false;
 
             // refresh game source every end of frame
             RefreshGS();
+
+            // execute OnDestroy method after destroy
+            _onDestroyPhase();
+        }
+        #endregion
+
+        #region Phase methods
+        private void _startPhase()
+        {
+            for (int i = 0; i < added.Count; i++)
+            {
+                try
+                {
+                    added[i].Start();
+                }
+                catch (Exception e)
+                {
+                    Debugger.LogError(string.Format("{0} {1}", e.Message, e.StackTrace));
+                }
+            }
+            added.Clear();
+        }
+
+        private void _updatePhase()
+        {
+            for (int i = 0; i < GSList.Count; i++)
+            {
+                // need try/catch ...
+                try
+                {
+                    if (GSList[i].executing)
+                        GSList[i].Update();
+                }
+                catch (Exception e)
+                {
+                    Debugger.LogError(string.Format("{0} {1}", e.Message, e.StackTrace));
+                }
+            }
+        }
+
+        private void _lateupdatePhase()
+        {
+            for (int i = 0; i < GSList.Count; i++)
+            {
+                try
+                {
+                    if (GSList[i].executing)
+                        GSList[i].LateUpdate();
+                }
+                catch (Exception e)
+                {
+                    Debugger.LogError(string.Format("{0} {1}", e.Message, e.StackTrace));
+                }
+            }
+        }
+
+        private void _onDestroyPhase()
+        {
+            for (int i = 0; i < removed.Count; i++)
+            {
+                try
+                {
+                    removed[i].OnDestroy();
+                }
+                catch (Exception e)
+                {
+                    Debugger.LogError(string.Format("{0} {1}", e.Message, e.StackTrace));
+                }
+            }
+            removed.Clear();
         }
         #endregion
 

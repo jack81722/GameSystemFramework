@@ -8,30 +8,69 @@ namespace GameSystem.GameCore
 {
     public class GameSource : IKeyable<uint>
     {
-        private bool lockManager = false;
-        private GameSourceManager _manager;
+        #region GSManager properties
+        /// <summary>
+        /// Manager of this game source
+        /// </summary>
+        private OnceSetValue<GameSourceManager> _manager;
         public GameSourceManager Manager
         {
             get { return _manager; }
-            set { if (!lockManager) { lockManager = true; _manager = value; } }
+            set { _manager.Value = value; }
         }
-        private bool lockSID = false;
-        private uint _sid;
+
+        /// <summary>
+        /// SID of this game source
+        /// </summary>
+        private OnceSetValue<uint> _sid;
         public uint SID
         {
             get { return _sid; }
-            set { if (!lockSID) { lockSID = true; _sid = value; } }
+            set { _sid.Value = value; }
         }
 
+        /// <summary>
+        /// Key of GSList
+        /// </summary>
         public uint Key { get { return SID; } set { SID = value; } }
+        #endregion
 
+        #region Name/Tag/Layer properties
+        /// <summary>
+        /// Name of game source
+        /// </summary>
+        public virtual string Name { get; set; }
+
+        /// <summary>
+        /// Tag of game source
+        /// </summary>
+        public virtual string Tag { get; set; }
+
+        /// <summary>
+        /// Layer of game source
+        /// </summary>
+        public virtual int Layer { get; set; }
+        #endregion
+
+        /// <summary>
+        /// Boolean of game source to executing
+        /// </summary>
         public virtual bool executing { get; }
+
+        /// <summary>
+        /// Transform of position, rotation, scale
+        /// </summary>
         public Transform transform;
 
+        /// <summary>
+        /// Current game delta time of one frame
+        /// </summary>
         public TimeSpan DeltaTime { get { return Manager.DeltaTime; } }
 
         public GameSource()
         {
+            _manager = new OnceSetValue<GameSourceManager>();
+            _sid = new OnceSetValue<uint>();
             transform = new Transform();
         }
 
@@ -49,9 +88,9 @@ namespace GameSystem.GameCore
         public virtual void OnEndOfFrame() { }
         #endregion
 
-        public void Destroy(GameSource gs)
+        public static void Destroy(GameSource gs)
         {
-            Manager.RemoveGameSource(gs);
+            gs.Manager.RemoveGameSource(gs);
         }
 
         #region Log methods

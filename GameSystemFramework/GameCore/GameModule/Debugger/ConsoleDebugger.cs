@@ -9,18 +9,29 @@ namespace GameSystem.GameCore.Debugger
     /// Default debugger by using console
     /// </summary>
     public class ConsoleDebugger : IDebugger
-    {   
-        public bool ShowTime { get; set; }
+    {
+        #region Time setting properties
+        /// <summary>
+        /// Turn On/Off showing time
+        /// </summary>
+        public bool ShowTime { get; set; } = true;
+        /// <summary>
+        /// Time string format
+        /// </summary>
+        public string TimeFormat = "yyyy/MM/dd HH:MM:ss";
+        #endregion
 
-        public ConsoleColor NormalColor { get; set; }
-        public ConsoleColor ErrorColor { get; set; }
-        public ConsoleColor WarningColor { get; set; }
+        #region Font setting properties
+        public ConsoleColor NormalColor { get; set; } = ConsoleColor.White;
+        public ConsoleColor ErrorColor { get; set; } = ConsoleColor.Red;
+        public ConsoleColor WarningColor { get; set; } = ConsoleColor.Yellow;
+        #endregion
 
         private bool queueable;
         private Timer printTimer;
         private List<TypedMsg> messages;
 
-        #region inner data structure
+        #region Inner data structure
         /// <summary>
         /// Temporary class of saved message
         /// </summary>
@@ -41,6 +52,7 @@ namespace GameSystem.GameCore.Debugger
         }
         #endregion
 
+        #region Constructor
         /// <summary>
         /// Constructor with print period
         /// </summary>
@@ -60,8 +72,12 @@ namespace GameSystem.GameCore.Debugger
                 queueable = false;
             }
         }
+        #endregion
 
         #region Private methods
+        /// <summary>
+        /// Process print method in period
+        /// </summary>
         private void PrintTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             lock (messages)
@@ -69,13 +85,13 @@ namespace GameSystem.GameCore.Debugger
                 if (messages.Count <= 0)
                     return;
                 MsgType type = MsgType.Normal;
-                Console.BackgroundColor = getColor(type);
+                Console.ForegroundColor = getColor(type);
                 // print all of messages
                 for (int i = 0; i < messages.Count; i++)
                 {
                     if (type != messages[i].type)
                     {
-                        Console.BackgroundColor = getColor(messages[i].type);
+                        Console.ForegroundColor = getColor(messages[i].type);
                         type = messages[i].type;
                     }
                     Console.WriteLine(messages[i].msg);
@@ -91,7 +107,7 @@ namespace GameSystem.GameCore.Debugger
         private string buildMsg(object obj)
         {
             if (ShowTime)
-                return string.Format("[{0}]:{1}", DateTime.Now.ToString("yyyy/MM/DD HH:MM:ss"), obj);
+                return string.Format("[{0}]: {1}", DateTime.Now.ToString(TimeFormat), obj);
             else
                 return obj.ToString();
         }
@@ -101,7 +117,7 @@ namespace GameSystem.GameCore.Debugger
         /// </summary>
         private void print(MsgType type, string msg)
         {
-            Console.BackgroundColor = getColor(type);
+            Console.ForegroundColor = getColor(type);
             Console.WriteLine(msg);
         }
 

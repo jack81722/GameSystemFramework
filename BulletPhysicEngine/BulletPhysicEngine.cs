@@ -1,11 +1,12 @@
 ﻿using BulletSharp;
 using GameSystem.GameCore;
+using GameSystem.GameCore.Debugger;
 using GameSystem.GameCore.GameModule.PhysicModule.ShapeInterface;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameSystem.ForBullet
+namespace BulletEngine
 {
     public class BulletPhysicEngine : PhysicEngineProxy
     {
@@ -14,7 +15,7 @@ namespace GameSystem.ForBullet
         private BroadphaseInterface broadphase;
         private DiscreteDynamicsWorld world;
 
-        public BulletPhysicEngine() : base()
+        public BulletPhysicEngine(IDebugger debugger) : base(debugger)
         {
             configuration = new DefaultCollisionConfiguration();
             dispatcher = new CollisionDispatcher(configuration);
@@ -22,10 +23,17 @@ namespace GameSystem.ForBullet
             world = new DiscreteDynamicsWorld(dispatcher, broadphase, null, configuration);
         }
 
+        #region Add/Remove collision methods
         public override void AddCollision(CollisionProxy colProxy)
         {
-            world.AddCollisionObject((CollisionObject) colProxy.CollisionData);
+            world.AddCollisionObject((CollisionObject) colProxy.CollisionObject);
         }
+
+        public override void RemoveCollision(CollisionProxy colProxy)
+        {
+            world.RemoveCollisionObject((CollisionObject) colProxy.CollisionObject);
+        }
+        #endregion
 
         #region Create collision proxy
         public override CollisionProxy CreateBoxCollision(IBoxShape shape)
@@ -66,11 +74,6 @@ namespace GameSystem.ForBullet
         }
         #endregion
 
-        public override void RemoveCollision(CollisionProxy colProxy)
-        {
-            world.RemoveCollisionObject((CollisionObject)colProxy.CollisionData);
-        }
-
         public override void Initialize() { }
 
         public override void Update(TimeSpan deltaTime)
@@ -86,10 +89,27 @@ namespace GameSystem.ForBullet
                 CollisionProxy colA = (CollisionProxy)manifold.Body0.UserObject;
                 CollisionProxy colB = (CollisionProxy)manifold.Body1.UserObject;
 
-                //if (colA != null && colB != null)
+                // check if both are not null
+                if (colA != null && colB != null)
                 {
-                    colA.OnCollision(colA, colB);
-                    colB.OnCollision(colB, colA);
+                    // execute colA -> colB event
+                    try
+                    {
+                        colA.OnCollision(colA, colB);
+                    }
+                    catch (Exception e)
+                    {
+                        LogError(string.Format("{0} {1}", e.Message, e.StackTrace));
+                    }
+                    // execute colB -> colA event
+                    try
+                    {
+                        colB.OnCollision(colB, colA);
+                    }
+                    catch (Exception e)
+                    {
+                        LogError(string.Format("{0} {1}", e.Message, e.StackTrace));
+                    }
                 }
             }
         }

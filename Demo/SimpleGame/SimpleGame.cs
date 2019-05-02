@@ -1,5 +1,6 @@
-﻿using GameSystem.ForBullet;
+﻿using BulletEngine;
 using GameSystem.GameCore;
+using GameSystem.GameCore.Debugger;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,8 +17,9 @@ namespace Demo.SimpleGame
 
         public SimpleGame()
         {
-            BulletPhysicEngine physicEngine = new BulletPhysicEngine();
-            gsManager = new GameSourceManager(physicEngine);
+            IDebugger debugger = new ConsoleDebugger();
+            BulletPhysicEngine physicEngine = new BulletPhysicEngine(debugger);
+            gsManager = new GameSourceManager(physicEngine, debugger);
             builder = new SimpleGameBuilder();
             game = new Game(physicEngine, gsManager);
         }
@@ -30,8 +32,8 @@ namespace Demo.SimpleGame
 
         public void StartGame()
         {
-            //gameTask = Task.Factory.StartNew(() => game.Start());
-            game.Start();
+            gameTask = Task.Factory.StartNew(() => game.Start());
+            //game.Start();
         }
 
         public void StopGame()
