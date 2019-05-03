@@ -44,12 +44,14 @@ namespace GameSystem.GameCore
         /// <summary>
         /// Tag of game source
         /// </summary>
-        public virtual string Tag { get; set; }
+        public virtual string Tag { get; set; } = DefaultTag;
+        protected const string DefaultTag = "Default";
 
         /// <summary>
         /// Layer of game source
         /// </summary>
-        public virtual int Layer { get; set; }
+        public virtual int Layer { get; set; } = DefaultLayer;
+        protected const int DefaultLayer = 1;
         #endregion
 
         /// <summary>
@@ -67,12 +69,14 @@ namespace GameSystem.GameCore
         /// </summary>
         public TimeSpan DeltaTime { get { return Manager.DeltaTime; } }
 
+        #region Constructor
         public GameSource()
         {
             _manager = new OnceSetValue<GameSourceManager>();
             _sid = new OnceSetValue<uint>();
             transform = new Transform();
         }
+        #endregion
 
         #region Update phases
         public virtual void Start() { }

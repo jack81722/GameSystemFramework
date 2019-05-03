@@ -16,7 +16,7 @@ namespace GameSystem.GameCore
             set
             {
                 newEnable = value;
-                Manager.ChageState(this);
+                Manager.ChageExecuteState(this);
             }
         }
 

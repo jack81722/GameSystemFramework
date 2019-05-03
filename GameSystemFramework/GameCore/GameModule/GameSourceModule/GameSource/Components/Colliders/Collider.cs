@@ -12,11 +12,28 @@ namespace GameSystem.GameCore.Components
         protected CollisionProxy colProxy;
         public event OnCollisionHandler OnCollisionEvent;
 
+        #region Mask properties
+        private bool lockMask = false;
+        private int _mask = -1;
+        public int Mask
+        {
+            get { return _mask; }
+            set
+            {
+                if (!lockMask)
+                    _mask = value;
+                else
+                    throw new InvalidOperationException("Mask was been locked.");
+            }
+        }
+        #endregion
+
         public override void Start()
         {
             colProxy.collider = this;
             colProxy.SetTransform(transform.matrix);
             colProxy.CollisionEvent += ColProxy_CollisionEvent;
+            lockMask = true;
         }
 
         public override void OnDestroy()

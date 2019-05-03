@@ -11,12 +11,20 @@ namespace GameSystem.GameCore
 {
     public class GameSourceManager : IGameModule
     {   
+        /// <summary>
+        /// All game sources
+        /// </summary>
         private KeyedList<uint, GameSource> GSList;
+
+        /// <summary>
+        /// Source water id
+        /// </summary>
         private uint source_id;
 
         public bool updating { get; private set; }
         public TimeSpan DeltaTime { get; private set; }
 
+        #region Temp of add/remove game sources
         // temp of added/removed game source which would execute start/destroy phase
         private List<GameSource> added;
         private List<GameSource> removed;
@@ -24,6 +32,7 @@ namespace GameSystem.GameCore
         // temp of adding/removing game sources for adding/removing 
         private List<GameSource> temp_adding;
         private List<GameSource> temp_remove;
+        #endregion
 
         // temp of state refreshing game sources
         private List<GameSource> temp_stateRefresh;
@@ -32,6 +41,7 @@ namespace GameSystem.GameCore
 
         private IDebugger Debugger;
 
+        #region Constructor
         public GameSourceManager(PhysicEngineProxy physicEngine, IDebugger debugger)
         {
             source_id = 0;
@@ -48,7 +58,8 @@ namespace GameSystem.GameCore
             PhysicEngine = physicEngine;
             Debugger = debugger;
         }
-        
+        #endregion
+
         /// <summary>
         /// Get primary SID
         /// </summary>
@@ -169,7 +180,7 @@ namespace GameSystem.GameCore
                 _removeGS(temp_remove[i]);
         }
 
-        public void ChageState(GameSource source)
+        public void ChageExecuteState(GameSource source)
         {
             temp_stateRefresh.Add(source);
         }

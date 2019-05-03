@@ -24,8 +24,16 @@
         }
       },
       "GameSystemFramework/1.0.0": {
+        "dependencies": {
+          "ReflectionTool": "1.0.0"
+        },
         "runtime": {
           "GameSystemFramework.dll": {}
+        }
+      },
+      "ReflectionTool/1.0.0": {
+        "runtime": {
+          "ReflectionTool.dll": {}
         }
       },
       "BulletSharp/1.0.0.0": {
@@ -59,6 +67,11 @@
       "hashPath": "netstandard.library.2.0.3.nupkg.sha512"
     },
     "GameSystemFramework/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ReflectionTool/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

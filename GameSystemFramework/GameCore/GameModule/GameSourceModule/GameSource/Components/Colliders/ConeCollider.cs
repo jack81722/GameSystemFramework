@@ -13,7 +13,7 @@ namespace GameSystem.GameCore.Components
 
         public override void Start()
         {
-            colProxy = Manager.PhysicEngine.CreateConeCollision(this);
+            colProxy = Manager.PhysicEngine.CreateConeCollision(this, Layer, Mask);
             coneSize.Lock();
             base.Start();
         }

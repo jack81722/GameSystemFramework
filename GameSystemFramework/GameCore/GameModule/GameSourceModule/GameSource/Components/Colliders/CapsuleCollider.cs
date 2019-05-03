@@ -13,7 +13,7 @@ namespace GameSystem.GameCore.Components
 
         public override void Start()
         {
-            colProxy = Manager.PhysicEngine.CreateCapsuleCollision(this);
+            colProxy = Manager.PhysicEngine.CreateCapsuleCollision(this, Layer, Mask);
             capsuleSize.Lock();
             base.Start();
         }

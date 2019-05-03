@@ -19,7 +19,7 @@ namespace GameSystem.GameCore
             set
             {
                 newActive = value;
-                Manager.ChageState(this);
+                Manager.ChageExecuteState(this);
             }
         }
         private bool curActive = true;

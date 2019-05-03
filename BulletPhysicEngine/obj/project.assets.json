@@ -29,11 +29,24 @@
       "GameSystemFramework/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
+        "dependencies": {
+          "ReflectionTool": "1.0.0"
+        },
         "compile": {
           "bin/placeholder/GameSystemFramework.dll": {}
         },
         "runtime": {
           "bin/placeholder/GameSystemFramework.dll": {}
+        }
+      },
+      "ReflectionTool/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/ReflectionTool.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ReflectionTool.dll": {}
         }
       }
     }
@@ -183,6 +196,11 @@
       "type": "project",
       "path": "../GameSystemFramework/GameSystemFramework.csproj",
       "msbuildProject": "../GameSystemFramework/GameSystemFramework.csproj"
+    },
+    "ReflectionTool/1.0.0": {
+      "type": "project",
+      "path": "../ReflectionTool/ReflectionTool.csproj",
+      "msbuildProject": "../ReflectionTool/ReflectionTool.csproj"
     }
   },
   "projectFileDependencyGroups": {

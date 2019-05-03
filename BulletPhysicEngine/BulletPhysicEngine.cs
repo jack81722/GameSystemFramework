@@ -24,9 +24,9 @@ namespace BulletEngine
         }
 
         #region Add/Remove collision methods
-        public override void AddCollision(CollisionProxy colProxy)
+        public override void AddCollision(CollisionProxy colProxy, int layer = 1, int mask = -1)
         {
-            world.AddCollisionObject((CollisionObject) colProxy.CollisionObject);
+            world.AddCollisionObject((CollisionObject) colProxy.CollisionObject, layer, mask);
         }
 
         public override void RemoveCollision(CollisionProxy colProxy)
@@ -36,42 +36,44 @@ namespace BulletEngine
         #endregion
 
         #region Create collision proxy
-        public override CollisionProxy CreateBoxCollision(IBoxShape shape)
+        public override CollisionProxy CreateBoxCollision(IBoxShape shape, int layer = 1, int mask = -1)
         {
             CollisionObject co = new CollisionObject();
             co.CollisionShape = new BoxShape(shape.HalfSize.ToBullet());
-            world.AddCollisionObject(co);
+            world.AddCollisionObject(co, layer, mask);
             return new BulletCollision(co, null);
         }
 
-        public override CollisionProxy CreateCapsuleCollision(ICapsuleShape shape)
+        public override CollisionProxy CreateSphereCollision(ISphereShape shape, int layer = 1, int mask = -1)
+        {
+            CollisionObject co = new CollisionObject();
+            co.CollisionShape = new SphereShape(shape.Radius);
+            world.AddCollisionObject(co, layer, mask);
+            return new BulletCollision(co, null);
+        }
+
+        public override CollisionProxy CreateCapsuleCollision(ICapsuleShape shape, int layer = 1, int mask = -1)
         {
             CollisionObject co = new CollisionObject();
             co.CollisionShape = new CapsuleShape(shape.Radius, shape.Height);
-            world.AddCollisionObject(co);
+            world.AddCollisionObject(co, layer, mask);
             return new BulletCollision(co, null);
         }
 
-        public override CollisionProxy CreateConeCollision(IConeShape shape)
+        public override CollisionProxy CreateConeCollision(IConeShape shape, int layer = 1, int mask = -1)
         {
             CollisionObject co = new CollisionObject();
             co.CollisionShape = new ConeShape(shape.Radius, shape.Height);
-            world.AddCollisionObject(co);
+            world.AddCollisionObject(co, layer, mask);
             return new BulletCollision(co, null);
         }
 
-        public override CollisionProxy CreateOtherCollision(int shapeType, params object[] shapeArgs)
+        public override CollisionProxy CreateOtherCollision(int shapeType, int layer = 1, int mask = -1, params object[] shapeArgs)
         {
             throw new NotImplementedException();
         }
 
-        public override CollisionProxy CreateSphereCollision(ISphereShape shape)
-        {
-            CollisionObject co = new CollisionObject();
-            co.CollisionShape = new SphereShape(shape.Radius);
-            world.AddCollisionObject(co);
-            return new BulletCollision(co, null);
-        }
+        
         #endregion
 
         public override void Initialize() { }

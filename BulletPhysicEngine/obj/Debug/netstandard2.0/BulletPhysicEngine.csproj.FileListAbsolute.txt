@@ -11,3 +11,5 @@ D:\Work Space\Visual Studio 2017\GameSystemFramework\trunk\BulletPhysicEngine\bi
 D:\Work Space\Visual Studio 2017\GameSystemFramework\trunk\BulletPhysicEngine\obj\Debug\netstandard2.0\BulletPhysicEngine.csproj.CopyComplete
 D:\Work Space\Visual Studio 2017\GameSystemFramework\trunk\BulletPhysicEngine\obj\Debug\netstandard2.0\BulletPhysicEngine.dll
 D:\Work Space\Visual Studio 2017\GameSystemFramework\trunk\BulletPhysicEngine\obj\Debug\netstandard2.0\BulletPhysicEngine.pdb
+D:\Work Space\Visual Studio 2017\GameSystemFramework\trunk\BulletPhysicEngine\bin\Debug\netstandard2.0\ReflectionTool.dll
+D:\Work Space\Visual Studio 2017\GameSystemFramework\trunk\BulletPhysicEngine\bin\Debug\netstandard2.0\ReflectionTool.pdb

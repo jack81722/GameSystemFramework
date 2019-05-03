@@ -12,7 +12,7 @@ namespace GameSystem.GameCore.Components
 
         public override void Start()
         {
-            colProxy = Manager.PhysicEngine.CreateSphereCollision(this);
+            colProxy = Manager.PhysicEngine.CreateSphereCollision(this, Layer, Mask);
             radius.Lock();
             base.Start();
         }

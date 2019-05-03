@@ -15,7 +15,7 @@ namespace GameSystem.GameCore.Components
         {
             if (Manager.PhysicEngine == null)
                 throw new InvalidOperationException("Physic engine was not be installed.");
-            colProxy = Manager.PhysicEngine.CreateBoxCollision(this);
+            colProxy = Manager.PhysicEngine.CreateBoxCollision(this, Layer, Mask);
             // size must be locked when starting
             halfSize.Lock();
             base.Start();
