@@ -6,11 +6,11 @@ namespace GameSystem.GameCore
 {
     public abstract class GameBuilder
     {
-        protected GameSourceManager gsMgr;
+        protected Game game;
 
-        public void Build(GameSourceManager gsMgr)
+        public void Build(Game game)
         {
-            this.gsMgr = gsMgr;
+            this.game = game;
             Building();
         }
 
@@ -18,7 +18,7 @@ namespace GameSystem.GameCore
 
         protected GameObject CreateGameObject(string name = "GameObject")
         {
-            var go = gsMgr.Create<GameObject>();
+            var go = game.mainScene.GSManager.Create<GameObject>();
             go.Name = name;
             return go;
         }

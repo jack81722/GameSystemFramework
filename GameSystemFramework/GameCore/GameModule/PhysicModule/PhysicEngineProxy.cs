@@ -1,6 +1,7 @@
 ﻿using System;
 using GameSystem.GameCore.Debugger;
 using GameSystem.GameCore.GameModule.PhysicModule.ShapeInterface;
+using GameSystem.GameCore.SerializableMath;
 
 namespace GameSystem.GameCore
 {
@@ -13,7 +14,6 @@ namespace GameSystem.GameCore
             Debugger = debugger;
         }
 
-        public virtual void Initialize() { }
         public virtual void Update(TimeSpan tick) { }
 
         #region Add/Remove collision methods
@@ -32,6 +32,7 @@ namespace GameSystem.GameCore
         public abstract void RemoveCollision(CollisionProxy colProxy);
         #endregion
 
+        #region Create collision methods
         /// <summary>
         /// Create standard box collision
         /// </summary>
@@ -72,6 +73,31 @@ namespace GameSystem.GameCore
         /// <param name="mask">mask of collision</param>
         /// <param name="shapeArgs">other shape argument</param>
         public abstract CollisionProxy CreateOtherCollision(int shapeType, int layer = 1, int mask = -1, params object[] shapeArgs);
+        #endregion
+
+        #region Raycast methods
+        /// <summary>
+        /// Raycast single result of collision proxy
+        /// </summary>
+        /// <param name="startPoint">start point of ray</param>
+        /// <param name="endPoint">end point of ray</param>
+        /// <param name="hitPoint">hit point of result</param>
+        /// <param name="hitObject">hit object of result</param>
+        /// <param name="mask">detect filter mask</param>
+        /// <returns>has hit boolean</returns>
+        public abstract bool Raycast(Vector3 startPoint, Vector3 endPoint, out Vector3 hitPoint, out CollisionProxy hitObject, int mask = -1);
+
+        /// <summary>
+        /// Raycast multiple results of collision proxy
+        /// </summary>
+        /// <param name="startPoint">start point of ray</param>
+        /// <param name="endPoint">end point of ray</param>
+        /// <param name="hitPoints">hit points of result</param>
+        /// <param name="hitObjects">hit objects of result</param>
+        /// <param name="mask">detect filter mask</param>
+        /// <returns>has hit boolean</returns>
+        public abstract bool Raycast(Vector3 startPoint, Vector3 endPoint, out Vector3[] hitPoints, out CollisionProxy[] hitObjects, int mask = -1);
+        #endregion
 
         #region Log methods
         public void Log(object obj)

@@ -6,7 +6,6 @@ namespace GameSystem.GameCore
 {
     public interface IGameModule
     {
-        void Initialize();
         void Update(TimeSpan tick);
     }
 }
