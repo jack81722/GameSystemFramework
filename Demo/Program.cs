@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BulletSharp;
+using System;
 
 namespace Demo
 {
@@ -6,6 +7,8 @@ namespace Demo
     {
         static void Main(string[] args)
         {
+            DefaultCollisionConfiguration configuration = new DefaultCollisionConfiguration();
+
             SimpleGame.SimpleGame game = new SimpleGame.SimpleGame();
             game.Init();
             game.StartGame();

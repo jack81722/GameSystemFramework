@@ -1,6 +1,6 @@
 ﻿using BulletSharp;
 using GameSystem.GameCore;
-using GameSystem.GameCore.Components;
+using GameSystem.GameCore.Physics;
 using GameSystem.GameCore.SerializableMath;
 
 namespace BulletEngine

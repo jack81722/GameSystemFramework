@@ -10,35 +10,25 @@ namespace Demo.SimpleGame
 {
     public class SimpleGame
     {
-        Task gameTask;
-        Game game;
-        GameSourceManager gsManager;
-        SimpleGameBuilder builder;
+        private Game game;
+        private SimpleGameBuilder builder;
 
         public SimpleGame()
         {
             IDebugger debugger = new ConsoleDebugger();
-            BulletPhysicEngine physicEngine = new BulletPhysicEngine(debugger);
-            gsManager = new GameSourceManager(physicEngine, debugger);
-            builder = new SimpleGameBuilder();
-            game = new Game(physicEngine, gsManager);
+            BulletEngineFactory phyEngineFactory = new BulletEngineFactory();            
+            builder = new SimpleGameBuilder(debugger);
+            game = new Game(phyEngineFactory, debugger);
         }
 
         public void Init()
         {
-            game.Initialize();
-            builder.Build(gsManager);
+            builder.Build(game);
         }
 
         public void StartGame()
         {
-            gameTask = Task.Factory.StartNew(() => game.Start());
-            //game.Start();
-        }
-
-        public void StopGame()
-        {   
-            game.Stop();
+            game.Start();
         }
     }
 }

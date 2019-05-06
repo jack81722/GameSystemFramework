@@ -1,66 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using GameSystem.GameCore.Debugger;
+using GameSystem.GameCore.Physics;
 
 namespace GameSystem.GameCore
 {
     public class Game
     {
-        /// <summary>
-        /// Defined game module list
-        /// </summary>
-        protected List<IGameModule> GMList;
+        public int GameID;
 
-        private bool running = true;
+        public Scene mainScene;
+
         public float TargetFPS = 60f;
 
-        public Game(params IGameModule[] gameModules)
-        {
-            GMList = new List<IGameModule>(gameModules);
-            GMList.RemoveAll(gm => gm == null);
-        }
+        public IDebugger Debugger;
+        private IPhysicEngineFactory PhysicEngineFactory;
 
-        public void Initialize()
+        public Game(IPhysicEngineFactory physicEngineFactory, IDebugger debugger)
         {
-            for(int i = 0; i < GMList.Count; i++)
-            {
-                GMList[i].Initialize();
-            }
+            Debugger = debugger;
+            PhysicEngineFactory = physicEngineFactory;
+            PhysicEngineProxy phyEngine = PhysicEngineFactory.Create(Debugger);
+            mainScene = new Scene(phyEngine, Debugger);
         }
 
         public void Start()
         {
-            DateTime curr_time = DateTime.UtcNow;
-            DateTime last_time = curr_time;
-            running = true;
-            while (running)
-            {
-                curr_time = DateTime.UtcNow;
-                TimeSpan deltaTime;
-                // caculate time span between current and last time
-                if ((deltaTime = curr_time - last_time).TotalMilliseconds > 0)
-                {
-                    // update all game module by delta time
-                    for(int i = 0; i < GMList.Count; i++)
-                    {
-                        GMList[i].Update(deltaTime);
-                    }
-                }
-                // correct time into fps
-                float TargetSecond = 1f / TargetFPS;
-                if (deltaTime.TotalSeconds < TargetSecond)
-                {
-                    Thread.Sleep((int)(TargetSecond - deltaTime.TotalSeconds));
-                }
-                last_time = curr_time;
-            }
+            mainScene.Run();
         }
 
         public void Stop()
         {
-            running = false;
+            mainScene.Stop();
         }
+
+        public void Close()
+        {
+            mainScene.Stop();
+        }
+
     }
 }

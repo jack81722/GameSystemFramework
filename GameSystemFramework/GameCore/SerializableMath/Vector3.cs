@@ -9,6 +9,9 @@ namespace GameSystem.GameCore.SerializableMath
     {
         public float x, y, z;
 
+        public static readonly Vector3 Zero = new Vector3(0);
+        public static readonly Vector3 One = new Vector3(1);
+
         public Vector3(float value)
         {
             x = y = z = value;
