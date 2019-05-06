@@ -1,9 +1,8 @@
 ﻿using System;
 using GameSystem.GameCore.Debugger;
-using GameSystem.GameCore.GameModule.PhysicModule.ShapeInterface;
 using GameSystem.GameCore.SerializableMath;
 
-namespace GameSystem.GameCore
+namespace GameSystem.GameCore.Physics
 {
     public abstract class PhysicEngineProxy : IGameModule
     {

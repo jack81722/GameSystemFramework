@@ -1,7 +1,4 @@
-﻿using GameSystem.GameCore.GameModule.PhysicModule.ShapeInterface;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using GameSystem.GameCore.Physics;
 
 namespace GameSystem.GameCore.Components
 {

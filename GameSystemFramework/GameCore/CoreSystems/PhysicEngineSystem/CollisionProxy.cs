@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameSystem.GameCore
+namespace GameSystem.GameCore.Physics
 {
     /// <summary>
     /// Abstract collision proxy class
@@ -35,11 +35,17 @@ namespace GameSystem.GameCore
             this.collider = collider;
         }
 
-        public void OnCollision(CollisionProxy colA, CollisionProxy colB)
+        /// <summary>
+        /// Execute collision event
+        /// </summary>
+        public void ExecuteCollision(CollisionProxy colA, CollisionProxy colB)
         {
             CollisionEvent.Invoke(colA, colB);
         }
 
+        /// <summary>
+        /// Set transform by matrix
+        /// </summary>
         public abstract void SetTransform(Matrix4x4 matrix);
     }
 }

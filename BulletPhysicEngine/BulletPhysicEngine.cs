@@ -2,7 +2,7 @@
 using GameSystem;
 using GameSystem.GameCore;
 using GameSystem.GameCore.Debugger;
-using GameSystem.GameCore.GameModule.PhysicModule.ShapeInterface;
+using GameSystem.GameCore.Physics;
 using System;
 
 namespace BulletEngine
@@ -41,7 +41,7 @@ namespace BulletEngine
                     // execute colA -> colB event
                     try
                     {
-                        colA.OnCollision(colA, colB);
+                        colA.ExecuteCollision(colA, colB);
                     }
                     catch (Exception e)
                     {
@@ -50,7 +50,7 @@ namespace BulletEngine
                     // execute colB -> colA event
                     try
                     {
-                        colB.OnCollision(colB, colA);
+                        colB.ExecuteCollision(colB, colA);
                     }
                     catch (Exception e)
                     {

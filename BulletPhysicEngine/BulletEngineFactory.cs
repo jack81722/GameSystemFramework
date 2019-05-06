@@ -1,8 +1,5 @@
-﻿using GameSystem.GameCore;
+﻿using GameSystem.GameCore.Physics;
 using GameSystem.GameCore.Debugger;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BulletEngine
 {

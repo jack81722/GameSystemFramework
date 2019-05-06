@@ -10,14 +10,14 @@ namespace Demo.SimpleGame
 {
     public class SimpleGame
     {
-        Game game;
-        SimpleGameBuilder builder;
+        private Game game;
+        private SimpleGameBuilder builder;
 
         public SimpleGame()
         {
             IDebugger debugger = new ConsoleDebugger();
             BulletEngineFactory phyEngineFactory = new BulletEngineFactory();            
-            builder = new SimpleGameBuilder();
+            builder = new SimpleGameBuilder(debugger);
             game = new Game(phyEngineFactory, debugger);
         }
 

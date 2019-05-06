@@ -1,9 +1,5 @@
 ﻿using GameSystem.GameCore.Debugger;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using GameSystem.GameCore.Physics;
 
 namespace GameSystem.GameCore
 {
@@ -13,7 +9,6 @@ namespace GameSystem.GameCore
 
         public Scene mainScene;
 
-        private bool running = true;
         public float TargetFPS = 60f;
 
         public IDebugger Debugger;

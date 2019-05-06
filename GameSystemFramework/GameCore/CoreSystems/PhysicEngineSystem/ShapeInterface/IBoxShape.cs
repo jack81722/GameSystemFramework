@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameSystem.GameCore.GameModule.PhysicModule.ShapeInterface
+namespace GameSystem.GameCore.Physics
 {
     public interface IBoxShape
     {

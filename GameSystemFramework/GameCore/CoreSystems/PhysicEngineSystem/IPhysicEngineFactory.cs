@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameSystem.GameCore
+namespace GameSystem.GameCore.Physics
 {
     public interface IPhysicEngineFactory
     {

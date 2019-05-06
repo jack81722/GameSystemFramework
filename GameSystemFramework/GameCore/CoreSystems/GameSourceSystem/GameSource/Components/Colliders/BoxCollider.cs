@@ -1,8 +1,6 @@
-﻿using GameSystem.GameCore.GameModule.PhysicModule.ShapeInterface;
+﻿using GameSystem.GameCore.Physics;
 using GameSystem.GameCore.SerializableMath;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GameSystem.GameCore.Components
 {
