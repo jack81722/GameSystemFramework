@@ -40,7 +40,7 @@ namespace BulletEngine
         /// Convert from bullet array to serialized math array
         /// </summary>
         public static GameSystem.GameCore.SerializableMath.Vector3[] ToSerializable(this BulletSharp.Math.Vector3[] vs)
-        {
+        {   
             GameSystem.GameCore.SerializableMath.Vector3[] vectors = new GameSystem.GameCore.SerializableMath.Vector3[vs.Length];
             for (int i = 0; i < vs.Length; i++)
             {
